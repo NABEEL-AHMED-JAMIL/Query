@@ -1,0 +1,52 @@
+select
+	GC.ID,
+	GC.FIELD_TYPE,
+	GC.CONTROL_NAME,
+	GC.STATUS,
+	GLG.CONTROL_ORDER,
+	GLG.DISABLED_PATTERN,
+	GLG.VISIBLE_PATTERN,
+	GLG.FIELD_WIDTH,
+	case
+		when GLG.SECTION_ID is not null then 'TRUE'
+		else 'FALSE'
+	end as LINK_STATUS,
+	GLG.ID as LINK_CONTROL_ID
+from
+	GEN_CONTROL GC
+left join GC_LINK_GS GLG on
+	GLG.CONTROL_ID = GC.ID
+	and GLG.SECTION_ID = 1
+	and GLG.STATUS != 2
+where
+	GC.STATUS != 2
+	and GC.CREATED_BY_ID = 1
+order by
+	GC.DATE_CREATED desc
+
+	
+select
+	GS.ID,
+	GS.SECTION_NAME,
+	GS.DESCRIPTION,
+	GS.STATUS,
+	GLG.CONTROL_ORDER,
+	GLG.DISABLED_PATTERN,
+	GLG.VISIBLE_PATTERN,
+	GLG.FIELD_WIDTH,
+	case
+		when GLG.SECTION_ID is not null then 'true'
+		else 'false'
+	end as LINK_STATUS,
+	GLG.ID as LINK_SECTION_ID
+from
+	GEN_SECTION GS
+left join GC_LINK_GS GLG on
+	GLG.SECTION_ID = GS.ID
+	and GLG.CONTROL_ID = 1
+	and GLG.STATUS != 2
+where
+	GS.STATUS != 2
+	and GS.CREATED_BY_ID = 1
+order by
+	GS.DATE_CREATED desc

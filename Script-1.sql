@@ -1,0 +1,1 @@
+delete  from source_job   
